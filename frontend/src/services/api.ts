@@ -1,4 +1,4 @@
-import type { DNSLookup, DNSLookupSummary, DashboardStats, SSLCheck, TokenResponse, User, WhoisCheck } from '../types/auth'
+import type { DNSLookup, DNSLookupSummary, DashboardStats, FileHash, JwtInspection, PasswordCheck, SSLCheck, TokenResponse, User, WhoisCheck } from '../types/auth'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 const ACCESS_KEY = 'sentinelx_access'
@@ -71,4 +71,43 @@ export const whoisService = {
   check: (domain: string) =>
     request<WhoisCheck>('/whois/check', { method: 'POST', body: JSON.stringify({ domain }) }),
   history: () => request<WhoisCheck[]>('/whois/history'),
+}
+
+export async function hashFile(file: File): Promise<FileHash> {
+  const token = getAccessToken()
+  const form = new FormData()
+  form.append('file', file)
+  const res = await fetch(`${BASE_URL}/hash/upload`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: form,
+  })
+  if (!res.ok) {
+    let detail = 'Error del servidor'
+    try {
+      const body = await res.json()
+      if (typeof body.detail === 'string') detail = body.detail
+    } catch {
+      /* sin cuerpo JSON */
+    }
+    throw new Error(detail)
+  }
+  return res.json() as Promise<FileHash>
+}
+
+export const hashService = {
+  upload: hashFile,
+  history: () => request<FileHash[]>('/hash/history'),
+}
+
+export const passwordService = {
+  check: (password: string) =>
+    request<PasswordCheck>('/password/check', { method: 'POST', body: JSON.stringify({ password }) }),
+  history: () => request<PasswordCheck[]>('/password/history'),
+}
+
+export const jwtService = {
+  inspect: (token: string) =>
+    request<JwtInspection>('/jwt/inspect', { method: 'POST', body: JSON.stringify({ token }) }),
+  history: () => request<JwtInspection[]>('/jwt/history'),
 }

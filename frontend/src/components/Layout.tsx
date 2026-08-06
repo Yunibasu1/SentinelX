@@ -15,9 +15,9 @@ export default function Layout() {
         </div>
 
         <nav className="flex-1 space-y-1 px-3 py-4 text-sm">
-          <span className="block px-2 py-2 rounded-lg bg-slate-800/60 text-white font-medium">
+          <Link to="/" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
             Dashboard
-          </span>
+          </Link>
           <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
             Network Scanner (próximamente)
           </span>
@@ -30,9 +30,15 @@ export default function Layout() {
           <Link to="/whois" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
             WHOIS
           </Link>
-          <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
-            Reportes (próximamente)
-          </span>
+          <Link to="/hash" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            Hash de Archivos
+          </Link>
+          <Link to="/password" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            Password Checker
+          </Link>
+          <Link to="/jwt" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            JWT Inspector
+          </Link>
         </nav>
 
         <div className="border-t border-slate-800 p-4">

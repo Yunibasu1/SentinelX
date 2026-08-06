@@ -5,7 +5,10 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
 import Dashboard from './pages/Dashboard'
 import DNSAnalyzer from './pages/DNSAnalyzer'
+import FileHasher from './pages/FileHasher'
+import JwtInspector from './pages/JwtInspector'
 import Login from './pages/Login'
+import PasswordChecker from './pages/PasswordChecker'
 import Register from './pages/Register'
 import SSLChecker from './pages/SSLChecker'
 import Whois from './pages/Whois'
@@ -19,9 +22,12 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
-          <Route path="/dns" element={<DNSAnalyzer />} />
-          <Route path="/ssl" element={<SSLChecker />} />
-          <Route path="/whois" element={<Whois />} />
+            <Route path="/dns" element={<DNSAnalyzer />} />
+            <Route path="/ssl" element={<SSLChecker />} />
+            <Route path="/whois" element={<Whois />} />
+            <Route path="/hash" element={<FileHasher />} />
+            <Route path="/password" element={<PasswordChecker />} />
+            <Route path="/jwt" element={<JwtInspector />} />
           </Route>
         </Route>
       </Routes>

@@ -68,3 +68,41 @@ export interface WhoisCheck {
   error: string | null
   created_at: string
 }
+
+export interface FileHash {
+  id: number
+  filename: string
+  sha256: string
+  sha512: string
+  md5: string
+  size_bytes: number
+  created_at: string
+}
+
+export interface PasswordCheck {
+  id: number
+  password_length: number
+  entropy_bits: number
+  has_lower: boolean
+  has_upper: boolean
+  has_digit: boolean
+  has_special: boolean
+  in_dictionary: boolean
+  crack_time_seconds: number
+  score: number
+  created_at: string
+}
+
+export interface JwtInspection {
+  id: number
+  algorithm: string | null
+  subject: string | null
+  issuer: string | null
+  audience: string | null
+  expires_at: string | null
+  issued_at: string | null
+  payload_json: string | null
+  warnings: string | null
+  error: string | null
+  created_at: string
+}
