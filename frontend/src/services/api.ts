@@ -1,6 +1,7 @@
 import type { ActivityLogItem, CompareDNSResult, CompareSSLResult, DNSLookup, DNSLookupSummary, DashboardStats, FileHash, JwtInspection, NotificationItem, PasswordCheck, SSLCheck, TokenResponse, User, WhoisCheck } from '../types/auth'
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
+const rawBase = (import.meta.env.VITE_API_URL ?? '/api').replace(/\/+$/, '')
+const BASE_URL = rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`
 const ACCESS_KEY = 'sentinelx_access'
 const REFRESH_KEY = 'sentinelx_refresh'
 

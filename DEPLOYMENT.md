@@ -31,7 +31,7 @@ SentinelX se despliega en tres servicios gratuitos: **Neon** (base de datos), **
 
 1. En GitHub: **Settings → Pages** → en **Build and deployment**, elige **Source: GitHub Actions**. Guarda.
 2. Crea un **secret** en **Settings → Secrets and variables → Actions**:
-   - Nombre: `VITE_API_URL` → Valor: la URL del backend del paso 2.
+   - Nombre: `VITE_API_URL` → Valor: la URL del backend del paso 2 (p. ej. `https://sentinelx-backend.onrender.com`). El frontend añade `/api` automáticamente; si prefieres, puedes ponerla ya con `/api` al final y también funciona.
 3. Cada `git push` a `main` con cambios en `frontend/` dispara el workflow `deploy-pages.yml`: compila el frontend y lo publica en `https://yunibasu1.github.io/SentinelX`.
 4. Para verlo la primera vez: **Actions** → ejecuta la tarea **"Deploy frontend a GitHub Pages"** → espera a que termine y abre la URL que aparece en el resumen.
 
@@ -41,4 +41,4 @@ SentinelX se despliega en tres servicios gratuitos: **Neon** (base de datos), **
 
 ## Alternativa: Frontend en Vercel
 
-Si prefieres Vercel: importa el repo con **Root Directory: `frontend`**, define la variable `VITE_API_URL` con la URL de Render y activa `VITE_BASE_URL` con el dominio raíz. `frontend/vercel.json` ya tiene el rewrite SPA.
+Si prefieres Vercel: importa el repo con **Root Directory: `frontend`**, define la variable `VITE_API_URL` con la URL de Render (con o sin `/api` al final) y activa `VITE_BASE_URL` con el dominio raíz. `frontend/vercel.json` ya tiene el rewrite SPA.
