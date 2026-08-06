@@ -17,6 +17,8 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "sqlite:///./sentinelx.db"
 
+    CORS_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173"
+
     GROQ_API_KEY: str = ""
 
     SMTP_HOST: str = "smtp.gmail.com"

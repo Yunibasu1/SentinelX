@@ -1,10 +1,9 @@
-# Configuracion para desplegar el backend en Render (plan gratuito)
-# 1. Nuevo > Web Service > conectar el repo SentinelX
-# 2. Root Directory: backend
-# 3. Build Command: pip install -r requirements.txt
-# 4. Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
-# 5. Add "Web Service" env vars (las mismas que en backend/.env)
-# Para SQLite: usar el disco persistente de Render o migrar a Postgres (Neon, gratis).
+# Blueprint de Render para desplegar el backend de SentinelX (plan gratuito)
+# Cómo usarlo:
+#   1. Entra en https://render.com -> New -> Blueprint (conecta el repo GitHub SentinelX)
+#   2. Render detecta este render.yaml y crea el servicio "sentinelx-backend"
+#   3. Te pedirá los valores de las variables marcadas con "sync: false" -> pega los que tienes en backend/.env
+#   4. Deploy -> espera a que termine (el plan gratis se duerme tras 15 min de inactividad)
 services:
   - type: web
     name: sentinelx-backend
@@ -13,6 +12,23 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
     envVars:
+      # Base de datos PostgreSQL gratuita en Neon (https://neon.tech)
+      # Crea un proyecto y copia su connection string: postgresql://user:pass@host/db
       - key: DATABASE_URL
-        value: sqlite:///./sentinelx.db
+        sync: false
+      # Genera una con: python -c "import secrets; print(secrets.token_urlsafe(32))"
+      - key: SECRET_KEY
+        sync: false
+      # Clave de Groq (https://console.groq.com)
+      - key: GROQ_API_KEY
+        sync: false
+      # Dominio de tu frontend en Vercel (se añade a los orígenes CORS)
+      - key: CORS_ORIGINS
+        sync: false
+      # Opcional: correo de avisos
+      - key: SMTP_FROM
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
