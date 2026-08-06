@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Link, Outlet } from 'react-router'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Layout() {
@@ -24,9 +24,9 @@ export default function Layout() {
           <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
             SSL Monitor (próximamente)
           </span>
-          <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
-            DNS Analyzer (próximamente)
-          </span>
+          <Link to="/dns" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            DNS Analyzer
+          </Link>
           <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
             Reportes (próximamente)
           </span>

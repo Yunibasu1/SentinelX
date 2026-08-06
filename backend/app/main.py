@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import auth, dashboard
+from app.api import auth, dashboard, dns
 from app.core.config import settings
 from app.database.db import Base, engine
 
@@ -19,6 +19,7 @@ app.add_middleware(
 
 app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 app.include_router(dashboard.router, prefix=settings.API_V1_PREFIX)
+app.include_router(dns.router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")

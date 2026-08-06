@@ -1,4 +1,4 @@
-import type { DashboardStats, TokenResponse, User } from '../types/auth'
+import type { DNSLookup, DNSLookupSummary, DashboardStats, TokenResponse, User } from '../types/auth'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 const ACCESS_KEY = 'sentinelx_access'
@@ -52,4 +52,11 @@ export const authService = {
 
 export const dashboardService = {
   stats: () => request<DashboardStats>('/dashboard/stats'),
+}
+
+export const dnsService = {
+  analyze: (domain: string) =>
+    request<DNSLookup>('/dns/analyze', { method: 'POST', body: JSON.stringify({ domain }) }),
+  history: () => request<DNSLookupSummary[]>('/dns/history'),
+  detail: (id: number) => request<DNSLookup>(`/dns/history/${id}`),
 }

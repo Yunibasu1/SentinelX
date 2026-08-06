@@ -20,3 +20,23 @@ export interface DashboardStats {
   alerts: number
   last_scan: string
 }
+
+export interface DNSRecord {
+  type: string
+  value: string
+  priority: number | null
+}
+
+export interface DNSLookup {
+  id: number
+  domain: string
+  created_at: string
+  records: DNSRecord[]
+}
+
+export interface DNSLookupSummary {
+  id: number
+  domain: string
+  created_at: string
+  record_count: number
+}
