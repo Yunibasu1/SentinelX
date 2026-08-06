@@ -1,6 +1,18 @@
 # SentinelX — AI Infrastructure & Security Platform
 
-Plataforma web para administradores de TI y pequeñas empresas que permite monitorizar servidores, dominios y aplicaciones desde un único panel de control. Proyecto en evolución por versiones (MVP → v1.0).
+Plataforma web para administradores de TI y pequeñas empresas que permite monitorizar servidores, dominios y aplicaciones desde un único panel de control. Proyecto en evolución por versiones (MVP → v2.0).
+
+## 🌐 Enlaces en vivo
+
+| Recurso                     | URL                                                                    |
+| --------------------------- | ---------------------------------------------------------------------- |
+| 🌍 Web (GitHub Pages)       | https://yunibasu1.github.io/SentinelX                                  |
+| 🔧 API (Render)             | https://sentinelx-backend-pksd.onrender.com                            |
+| 📚 Documentación API        | https://sentinelx-backend-pksd.onrender.com/docs                       |
+
+> Cuenta de demostración: `hector@empresa.com` / `Segura123`
+>
+> El plan gratis de Render se duerme tras 15 min de inactividad: la primera petición tarda ~30 s.
 
 ## ✨ Módulos
 
@@ -18,7 +30,7 @@ Plataforma web para administradores de TI y pequeñas empresas que permite monit
 - **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, React Router, TanStack Query
 - **Backend:** FastAPI, SQLAlchemy, Pydantic, PyJWT, bcrypt
 - **Base de datos:** SQLite (local) / PostgreSQL (producción, Neon)
-- **DevOps:** Docker, Docker Compose
+- **DevOps:** Docker, Docker Compose, GitHub Actions (CI/CD + GitHub Pages)
 
 ## 🏗 Arquitectura
 
@@ -143,4 +155,4 @@ Si prefieres Vercel: importa el repo con **Root Directory: `frontend`**, define 
 
 ## 👨‍💻 Autor
 
-Proyecto de portafolio. Desarrollado con enfoque profesional: commits por funcionalidad, ramas `feature/*`, y despliegue en la nube previsto para versiones futuras.
+Proyecto de portafolio. Desarrollado con enfoque profesional: commits por funcionalidad, ramas `feature/*`, y desplegado en la nube (Neon + Render + GitHub Pages).
