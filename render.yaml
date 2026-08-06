@@ -9,12 +9,14 @@ services:
     name: sentinelx-backend
     runtime: python
     plan: free
-    pythonVersion: 3.12.0
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /
     envVars:
+      # Versión de Python: la 3.14 (default) no compila pydantic-core 2.27 -> usamos 3.12
+      - key: PYTHON_VERSION
+        value: "3.12.11"
       # Base de datos PostgreSQL gratuita en Neon (https://neon.tech)
       # Crea un proyecto y copia su connection string: postgresql://user:pass@host/db
       - key: DATABASE_URL
