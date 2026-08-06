@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import DetailModal from '../components/DetailModal'
+import RecordActions from '../components/RecordActions'
 import { whoisService } from '../services/api'
 import type { WhoisCheck } from '../types/auth'
 
@@ -17,6 +19,7 @@ export default function Whois() {
   const queryClient = useQueryClient()
   const [domain, setDomain] = useState('')
   const [result, setResult] = useState<WhoisCheck | null>(null)
+  const [detail, setDetail] = useState<WhoisCheck | null>(null)
 
   const { data: history } = useQuery({ queryKey: ['whois-history'], queryFn: whoisService.history })
 
@@ -27,6 +30,11 @@ export default function Whois() {
       setDomain('')
       queryClient.invalidateQueries({ queryKey: ['whois-history'] })
     },
+  })
+
+  const remove = useMutation({
+    mutationFn: whoisService.remove,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['whois-history'] }),
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -106,7 +114,7 @@ export default function Whois() {
             {history.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
               >
                 <div>
                   <p className="font-medium text-white">{item.domain}</p>
@@ -115,14 +123,26 @@ export default function Whois() {
                     {item.registrar ? ` · ${item.registrar}` : ''}
                   </p>
                 </div>
-                <span className="rounded bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-400">
-                  OK
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="rounded bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-400">
+                    OK
+                  </span>
+                  <RecordActions
+                    onView={() => whoisService.detail(item.id).then(setDetail)}
+                    onDelete={() => remove.mutate(item.id)}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <DetailModal
+        title={detail ? `WHOIS · ${detail.domain}` : ''}
+        record={detail}
+        onClose={() => setDetail(null)}
+      />
     </div>
   )
 }

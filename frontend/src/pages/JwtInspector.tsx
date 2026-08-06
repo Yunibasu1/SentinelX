@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import DetailModal from '../components/DetailModal'
+import RecordActions from '../components/RecordActions'
 import { jwtService } from '../services/api'
 import type { JwtInspection } from '../types/auth'
 
@@ -17,6 +19,7 @@ export default function JwtInspector() {
   const queryClient = useQueryClient()
   const [token, setToken] = useState('')
   const [result, setResult] = useState<JwtInspection | null>(null)
+  const [detail, setDetail] = useState<JwtInspection | null>(null)
 
   const { data: history } = useQuery({ queryKey: ['jwt-history'], queryFn: jwtService.history })
 
@@ -27,6 +30,11 @@ export default function JwtInspector() {
       setToken('')
       queryClient.invalidateQueries({ queryKey: ['jwt-history'] })
     },
+  })
+
+  const remove = useMutation({
+    mutationFn: jwtService.remove,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['jwt-history'] }),
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -132,7 +140,13 @@ export default function JwtInspector() {
               >
                 <div className="flex items-center justify-between">
                   <p className="font-mono text-xs text-slate-200">{item.subject ?? 'sin sub'}</p>
-                  <p className="text-xs text-slate-500">{new Date(item.created_at).toLocaleString()}</p>
+                  <div className="flex items-center gap-3">
+                    <p className="text-xs text-slate-500">{new Date(item.created_at).toLocaleString()}</p>
+                    <RecordActions
+                      onView={() => jwtService.detail(item.id).then(setDetail)}
+                      onDelete={() => remove.mutate(item.id)}
+                    />
+                  </div>
                 </div>
                 <p className="mt-1 text-xs text-slate-500">
                   {item.algorithm ?? '—'}
@@ -143,6 +157,12 @@ export default function JwtInspector() {
           </ul>
         )}
       </div>
+
+      <DetailModal
+        title={detail ? `JWT · ${detail.subject ?? 'sin sub'}` : ''}
+        record={detail}
+        onClose={() => setDetail(null)}
+      />
     </div>
   )
 }

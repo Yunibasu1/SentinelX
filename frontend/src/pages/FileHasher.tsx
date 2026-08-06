@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import DetailModal from '../components/DetailModal'
+import RecordActions from '../components/RecordActions'
 import { hashService } from '../services/api'
 import type { FileHash } from '../types/auth'
 
@@ -37,6 +39,7 @@ function HashRow({ label, value }: { label: string; value: string }) {
 export default function FileHasher() {
   const queryClient = useQueryClient()
   const [result, setResult] = useState<FileHash | null>(null)
+  const [detail, setDetail] = useState<FileHash | null>(null)
 
   const { data: history } = useQuery({ queryKey: ['hash-history'], queryFn: hashService.history })
 
@@ -46,6 +49,11 @@ export default function FileHasher() {
       setResult(r)
       queryClient.invalidateQueries({ queryKey: ['hash-history'] })
     },
+  })
+
+  const remove = useMutation({
+    mutationFn: hashService.remove,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['hash-history'] }),
   })
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,12 +123,24 @@ export default function FileHasher() {
                     {new Date(item.created_at).toLocaleString()} · {formatSize(item.size_bytes)}
                   </p>
                 </div>
-                <p className="mt-1 truncate text-xs text-emerald-400">{item.sha256}</p>
+                <div className="mt-1 flex items-center justify-between gap-3">
+                  <p className="truncate text-xs text-emerald-400">{item.sha256}</p>
+                  <RecordActions
+                    onView={() => hashService.detail(item.id).then(setDetail)}
+                    onDelete={() => remove.mutate(item.id)}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <DetailModal
+        title={detail ? `Hash · ${detail.filename}` : ''}
+        record={detail}
+        onClose={() => setDetail(null)}
+      />
     </div>
   )
 }

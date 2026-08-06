@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import DetailModal from '../components/DetailModal'
+import RecordActions from '../components/RecordActions'
 import { passwordService } from '../services/api'
 import type { PasswordCheck } from '../types/auth'
 
@@ -32,6 +34,7 @@ export default function PasswordChecker() {
   const queryClient = useQueryClient()
   const [password, setPassword] = useState('')
   const [result, setResult] = useState<PasswordCheck | null>(null)
+  const [detail, setDetail] = useState<PasswordCheck | null>(null)
 
   const { data: history } = useQuery({ queryKey: ['password-history'], queryFn: passwordService.history })
 
@@ -41,6 +44,11 @@ export default function PasswordChecker() {
       setResult(r)
       queryClient.invalidateQueries({ queryKey: ['password-history'] })
     },
+  })
+
+  const remove = useMutation({
+    mutationFn: passwordService.remove,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['password-history'] }),
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -122,7 +130,7 @@ export default function PasswordChecker() {
             {history.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
               >
                 <div>
                   <p className="font-medium text-white">{item.password_length} caracteres</p>
@@ -130,16 +138,28 @@ export default function PasswordChecker() {
                     {new Date(item.created_at).toLocaleString()} · {item.entropy_bits.toFixed(0)} bits de entropía
                   </p>
                 </div>
-                <span
-                  className={`rounded px-2 py-0.5 text-xs font-semibold text-slate-200 ${SCORE_COLORS[item.score]}`}
-                >
-                  {SCORE_LABELS[item.score]}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`rounded px-2 py-0.5 text-xs font-semibold text-slate-200 ${SCORE_COLORS[item.score]}`}
+                  >
+                    {SCORE_LABELS[item.score]}
+                  </span>
+                  <RecordActions
+                    onView={() => passwordService.detail(item.id).then(setDetail)}
+                    onDelete={() => remove.mutate(item.id)}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <DetailModal
+        title={detail ? `Contraseña · ${SCORE_LABELS[detail.score]}` : ''}
+        record={detail}
+        onClose={() => setDetail(null)}
+      />
     </div>
   )
 }

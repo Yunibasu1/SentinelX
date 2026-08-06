@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import DetailModal from '../components/DetailModal'
+import RecordActions from '../components/RecordActions'
 import { sslService } from '../services/api'
 import type { SSLCheck } from '../types/auth'
 
@@ -17,6 +19,7 @@ export default function SSLChecker() {
   const queryClient = useQueryClient()
   const [domain, setDomain] = useState('')
   const [result, setResult] = useState<SSLCheck | null>(null)
+  const [detail, setDetail] = useState<SSLCheck | null>(null)
 
   const { data: history } = useQuery({ queryKey: ['ssl-history'], queryFn: sslService.history })
 
@@ -27,6 +30,11 @@ export default function SSLChecker() {
       setDomain('')
       queryClient.invalidateQueries({ queryKey: ['ssl-history'] })
     },
+  })
+
+  const remove = useMutation({
+    mutationFn: sslService.remove,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['ssl-history'] }),
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -109,7 +117,7 @@ export default function SSLChecker() {
             {history.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
               >
                 <div>
                   <p className="font-medium text-white">{item.domain}</p>
@@ -118,18 +126,30 @@ export default function SSLChecker() {
                     {item.is_valid ? ` · expira en ${item.days_left} días` : ' · error'}
                   </p>
                 </div>
-                <span
-                  className={`rounded px-2 py-0.5 text-xs font-semibold ${
-                    item.is_valid ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'
-                  }`}
-                >
-                  {item.is_valid ? 'Válido' : 'Error'}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`rounded px-2 py-0.5 text-xs font-semibold ${
+                      item.is_valid ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'
+                    }`}
+                  >
+                    {item.is_valid ? 'Válido' : 'Error'}
+                  </span>
+                  <RecordActions
+                    onView={() => sslService.detail(item.id).then(setDetail)}
+                    onDelete={() => remove.mutate(item.id)}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <DetailModal
+        title={detail ? `SSL · ${detail.domain}` : ''}
+        record={detail}
+        onClose={() => setDetail(null)}
+      />
     </div>
   )
 }

@@ -66,3 +66,21 @@ def detail(lookup_id: int, db: Session = Depends(get_db),
     if lookup is None:
         raise HTTPException(status_code=404, detail="Análisis no encontrado")
     return lookup
+
+
+@router.delete("/history/{lookup_id}")
+def delete(lookup_id: int, db: Session = Depends(get_db),
+           current_user: User = Depends(get_current_user)):
+    lookup = (
+        db.query(DNSLookup)
+        .filter(DNSLookup.id == lookup_id, DNSLookup.user_id == current_user.id)
+        .first()
+    )
+    if lookup is None:
+        raise HTTPException(status_code=404, detail="Análisis no encontrado")
+    db.delete(lookup)
+    db.commit()
+    notification_service.log_activity(
+        db, current_user, "Eliminación DNS", f"Consulta {lookup_id}"
+    )
+    return {"ok": True}

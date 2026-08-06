@@ -46,3 +46,33 @@ def history(db: Session = Depends(get_db),
         .limit(50)
         .all()
     )
+
+
+@router.get("/history/{record_id}", response_model=FileHashOut)
+def detail(record_id: int, db: Session = Depends(get_db),
+           current_user: User = Depends(get_current_user)):
+    record = _get_record(db, current_user, record_id)
+    return record
+
+
+@router.delete("/history/{record_id}")
+def delete(record_id: int, db: Session = Depends(get_db),
+           current_user: User = Depends(get_current_user)):
+    record = _get_record(db, current_user, record_id)
+    db.delete(record)
+    db.commit()
+    notification_service.log_activity(
+        db, current_user, "Eliminación hash", f"Consulta {record_id}"
+    )
+    return {"ok": True}
+
+
+def _get_record(db: Session, current_user: User, record_id: int) -> FileHash:
+    record = (
+        db.query(FileHash)
+        .filter(FileHash.id == record_id, FileHash.user_id == current_user.id)
+        .first()
+    )
+    if record is None:
+        raise HTTPException(status_code=404, detail="Consulta no encontrada")
+    return record

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import DetailModal from '../components/DetailModal'
+import RecordActions from '../components/RecordActions'
 import { dnsService } from '../services/api'
 import type { DNSLookup, DNSRecord } from '../types/auth'
 
@@ -52,6 +54,7 @@ export default function DNSAnalyzer() {
   const queryClient = useQueryClient()
   const [domain, setDomain] = useState('')
   const [result, setResult] = useState<DNSLookup | null>(null)
+  const [detail, setDetail] = useState<DNSLookup | null>(null)
 
   const { data: history } = useQuery({
     queryKey: ['dns-history'],
@@ -65,6 +68,11 @@ export default function DNSAnalyzer() {
       setDomain('')
       queryClient.invalidateQueries({ queryKey: ['dns-history'] })
     },
+  })
+
+  const remove = useMutation({
+    mutationFn: dnsService.remove,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['dns-history'] }),
   })
 
   const grouped = result
@@ -137,7 +145,7 @@ export default function DNSAnalyzer() {
             {history.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
+                className="flex items-center justify-between gap-3 rounded-xl border border-slate-800 bg-ink-900 px-4 py-3"
               >
                 <div>
                   <p className="font-medium text-white">{item.domain}</p>
@@ -145,12 +153,24 @@ export default function DNSAnalyzer() {
                     {new Date(item.created_at).toLocaleString()} · {item.record_count} registros
                   </p>
                 </div>
-                <RecordBadge type="DNS" />
+                <div className="flex items-center gap-3">
+                  <RecordBadge type="DNS" />
+                  <RecordActions
+                    onView={() => dnsService.detail(item.id).then(setDetail)}
+                    onDelete={() => remove.mutate(item.id)}
+                  />
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
+
+      <DetailModal
+        title={detail ? `Análisis DNS · ${detail.domain}` : ''}
+        record={detail}
+        onClose={() => setDetail(null)}
+      />
     </div>
   )
 }

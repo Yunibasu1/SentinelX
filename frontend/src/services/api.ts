@@ -59,18 +59,23 @@ export const dnsService = {
     request<DNSLookup>('/dns/analyze', { method: 'POST', body: JSON.stringify({ domain }) }),
   history: () => request<DNSLookupSummary[]>('/dns/history'),
   detail: (id: number) => request<DNSLookup>(`/dns/history/${id}`),
+  remove: (id: number) => request<{ ok: boolean }>(`/dns/history/${id}`, { method: 'DELETE' }),
 }
 
 export const sslService = {
   check: (domain: string) =>
     request<SSLCheck>('/ssl/check', { method: 'POST', body: JSON.stringify({ domain }) }),
   history: () => request<SSLCheck[]>('/ssl/history'),
+  detail: (id: number) => request<SSLCheck>(`/ssl/history/${id}`),
+  remove: (id: number) => request<{ ok: boolean }>(`/ssl/history/${id}`, { method: 'DELETE' }),
 }
 
 export const whoisService = {
   check: (domain: string) =>
     request<WhoisCheck>('/whois/check', { method: 'POST', body: JSON.stringify({ domain }) }),
   history: () => request<WhoisCheck[]>('/whois/history'),
+  detail: (id: number) => request<WhoisCheck>(`/whois/history/${id}`),
+  remove: (id: number) => request<{ ok: boolean }>(`/whois/history/${id}`, { method: 'DELETE' }),
 }
 
 export async function hashFile(file: File): Promise<FileHash> {
@@ -98,18 +103,24 @@ export async function hashFile(file: File): Promise<FileHash> {
 export const hashService = {
   upload: hashFile,
   history: () => request<FileHash[]>('/hash/history'),
+  detail: (id: number) => request<FileHash>(`/hash/history/${id}`),
+  remove: (id: number) => request<{ ok: boolean }>(`/hash/history/${id}`, { method: 'DELETE' }),
 }
 
 export const passwordService = {
   check: (password: string) =>
     request<PasswordCheck>('/password/check', { method: 'POST', body: JSON.stringify({ password }) }),
   history: () => request<PasswordCheck[]>('/password/history'),
+  detail: (id: number) => request<PasswordCheck>(`/password/history/${id}`),
+  remove: (id: number) => request<{ ok: boolean }>(`/password/history/${id}`, { method: 'DELETE' }),
 }
 
 export const jwtService = {
   inspect: (token: string) =>
     request<JwtInspection>('/jwt/inspect', { method: 'POST', body: JSON.stringify({ token }) }),
   history: () => request<JwtInspection[]>('/jwt/history'),
+  detail: (id: number) => request<JwtInspection>(`/jwt/history/${id}`),
+  remove: (id: number) => request<{ ok: boolean }>(`/jwt/history/${id}`, { method: 'DELETE' }),
 }
 
 export interface AiChatResponse {
