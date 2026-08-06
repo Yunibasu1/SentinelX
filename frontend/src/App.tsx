@@ -7,6 +7,8 @@ import Dashboard from './pages/Dashboard'
 import DNSAnalyzer from './pages/DNSAnalyzer'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import SSLChecker from './pages/SSLChecker'
+import Whois from './pages/Whois'
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
           <Route path="/dns" element={<DNSAnalyzer />} />
+          <Route path="/ssl" element={<SSLChecker />} />
+          <Route path="/whois" element={<Whois />} />
           </Route>
         </Route>
       </Routes>

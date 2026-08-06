@@ -40,3 +40,31 @@ export interface DNSLookupSummary {
   created_at: string
   record_count: number
 }
+
+export interface SSLCheck {
+  id: number
+  domain: string
+  is_valid: boolean
+  days_left: number
+  issuer: string | null
+  subject: string | null
+  serial_number: string | null
+  tls_version: string | null
+  signature_algorithm: string | null
+  expires_at: string | null
+  error: string | null
+  created_at: string
+}
+
+export interface WhoisCheck {
+  id: number
+  domain: string
+  registrar: string | null
+  status: string | null
+  creation_date: string | null
+  expiration_date: string | null
+  updated_date: string | null
+  name_servers: string | null
+  error: string | null
+  created_at: string
+}

@@ -1,4 +1,4 @@
-import type { DNSLookup, DNSLookupSummary, DashboardStats, TokenResponse, User } from '../types/auth'
+import type { DNSLookup, DNSLookupSummary, DashboardStats, SSLCheck, TokenResponse, User, WhoisCheck } from '../types/auth'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 const ACCESS_KEY = 'sentinelx_access'
@@ -59,4 +59,16 @@ export const dnsService = {
     request<DNSLookup>('/dns/analyze', { method: 'POST', body: JSON.stringify({ domain }) }),
   history: () => request<DNSLookupSummary[]>('/dns/history'),
   detail: (id: number) => request<DNSLookup>(`/dns/history/${id}`),
+}
+
+export const sslService = {
+  check: (domain: string) =>
+    request<SSLCheck>('/ssl/check', { method: 'POST', body: JSON.stringify({ domain }) }),
+  history: () => request<SSLCheck[]>('/ssl/history'),
+}
+
+export const whoisService = {
+  check: (domain: string) =>
+    request<WhoisCheck>('/whois/check', { method: 'POST', body: JSON.stringify({ domain }) }),
+  history: () => request<WhoisCheck[]>('/whois/history'),
 }

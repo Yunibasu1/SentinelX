@@ -21,11 +21,14 @@ export default function Layout() {
           <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
             Network Scanner (próximamente)
           </span>
-          <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
-            SSL Monitor (próximamente)
-          </span>
+          <Link to="/ssl" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            SSL Monitor
+          </Link>
           <Link to="/dns" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
             DNS Analyzer
+          </Link>
+          <Link to="/whois" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            WHOIS
           </Link>
           <span className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40 cursor-not-allowed opacity-60">
             Reportes (próximamente)
