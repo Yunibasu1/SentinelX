@@ -11,6 +11,7 @@ import JwtInspector from './pages/JwtInspector'
 import Login from './pages/Login'
 import PasswordChecker from './pages/PasswordChecker'
 import Register from './pages/Register'
+import Reports from './pages/Reports'
 import SSLChecker from './pages/SSLChecker'
 import Whois from './pages/Whois'
 
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/password" element={<PasswordChecker />} />
             <Route path="/jwt" element={<JwtInspector />} />
             <Route path="/ia" element={<AiAssistant />} />
+            <Route path="/reports" element={<Reports />} />
           </Route>
         </Route>
       </Routes>

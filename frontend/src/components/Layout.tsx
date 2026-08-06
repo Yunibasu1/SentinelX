@@ -42,6 +42,9 @@ export default function Layout() {
           <Link to="/ia" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
             Asistente IA
           </Link>
+          <Link to="/reports" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            Reportes
+          </Link>
         </nav>
 
         <div className="border-t border-slate-800 p-4">

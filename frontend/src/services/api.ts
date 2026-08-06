@@ -120,3 +120,29 @@ export const aiService = {
   chat: (message: string) =>
     request<AiChatResponse>('/ai/chat', { method: 'POST', body: JSON.stringify({ message }) }),
 }
+
+async function downloadReport(format: 'csv' | 'excel' | 'pdf'): Promise<void> {
+  const token = getAccessToken()
+  const names: Record<typeof format, string> = {
+    csv: 'informe_sentinelx.csv',
+    excel: 'informe_sentinelx.xlsx',
+    pdf: 'informe_sentinelx.pdf',
+  }
+  const res = await fetch(`${BASE_URL}/reports/${format}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  })
+  if (!res.ok) throw new Error('No se pudo generar el informe')
+  const blob = await res.blob()
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = names[format]
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+export const reportService = {
+  download: downloadReport,
+}
