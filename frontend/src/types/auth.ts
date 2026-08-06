@@ -106,3 +106,42 @@ export interface JwtInspection {
   error: string | null
   created_at: string
 }
+
+export interface NotificationItem {
+  id: number
+  title: string
+  message: string
+  kind: string
+  read: boolean
+  created_at: string
+}
+
+export interface ActivityLogItem {
+  id: number
+  action: string
+  detail: string
+  ip: string | null
+  created_at: string
+}
+
+export interface CompareDNSResult {
+  domain: string
+  latest_at: string
+  previous_at: string | null
+  added_records: string[]
+  removed_records: string[]
+  record_count_now: number
+  record_count_before: number
+}
+
+export interface CompareSSLResult {
+  domain: string
+  latest_at: string
+  previous_at: string | null
+  days_left_now: number | null
+  days_left_before: number | null
+  expires_at_now: string | null
+  expires_at_before: string | null
+  is_valid_now: boolean | null
+  is_valid_before: boolean | null
+}

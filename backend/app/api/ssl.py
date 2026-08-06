@@ -6,7 +6,7 @@ from app.database.db import get_db
 from app.models.ssl import SSLCheck
 from app.models.user import User
 from app.schemas.ssl import SSLCheckOut, SSLCheckRequest
-from app.services import ssl_service
+from app.services import notification_service, ssl_service
 
 router = APIRouter(prefix="/ssl", tags=["ssl"])
 
@@ -20,6 +20,9 @@ def check(data: SSLCheckRequest, db: Session = Depends(get_db),
     db.add(record)
     db.commit()
     db.refresh(record)
+    notification_service.log_activity(
+        db, current_user, "Comprobación SSL", f"Dominio {data.domain.strip().lower()}"
+    )
     return record
 
 

@@ -1,8 +1,16 @@
 import { Link, Outlet } from 'react-router'
+import { useQuery } from '@tanstack/react-query'
+
 import { useAuth } from '../contexts/AuthContext'
+import { notificationService } from '../services/api'
 
 export default function Layout() {
   const { user, logout } = useAuth()
+  const { data: unread = 0 } = useQuery({
+    queryKey: ['unread-count'],
+    queryFn: notificationService.unreadCount,
+    refetchInterval: 60000,
+  })
 
   return (
     <div className="flex min-h-screen">
@@ -44,6 +52,17 @@ export default function Layout() {
           </Link>
           <Link to="/reports" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
             Reportes
+          </Link>
+          <Link to="/notifications" className="flex items-center justify-between px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            <span>Notificaciones</span>
+            {unread > 0 ? (
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-xs font-bold text-white">
+                {unread}
+              </span>
+            ) : null}
+          </Link>
+          <Link to="/logs" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            Logs de actividad
           </Link>
         </nav>
 

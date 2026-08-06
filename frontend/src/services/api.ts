@@ -1,4 +1,4 @@
-import type { DNSLookup, DNSLookupSummary, DashboardStats, FileHash, JwtInspection, PasswordCheck, SSLCheck, TokenResponse, User, WhoisCheck } from '../types/auth'
+import type { ActivityLogItem, CompareDNSResult, CompareSSLResult, DNSLookup, DNSLookupSummary, DashboardStats, FileHash, JwtInspection, NotificationItem, PasswordCheck, SSLCheck, TokenResponse, User, WhoisCheck } from '../types/auth'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 const ACCESS_KEY = 'sentinelx_access'
@@ -145,4 +145,17 @@ async function downloadReport(format: 'csv' | 'excel' | 'pdf'): Promise<void> {
 
 export const reportService = {
   download: downloadReport,
+}
+
+export const notificationService = {
+  list: () => request<NotificationItem[]>('/notifications'),
+  unreadCount: () => request<number>('/notifications/unread-count'),
+  markRead: (id: number) => request<NotificationItem>(`/notifications/${id}/read`, { method: 'POST' }),
+  checkCerts: () => request<{ ok: boolean }>('/notifications/check-certs'),
+  logs: () => request<ActivityLogItem[]>('/notifications/logs'),
+}
+
+export const compareService = {
+  dns: (domain: string) => request<CompareDNSResult>(`/compare/dns?domain=${encodeURIComponent(domain)}`),
+  ssl: (domain: string) => request<CompareSSLResult>(`/compare/ssl?domain=${encodeURIComponent(domain)}`),
 }

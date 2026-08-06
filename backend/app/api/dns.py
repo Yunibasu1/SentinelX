@@ -6,7 +6,7 @@ from app.database.db import get_db
 from app.models.dns import DNSLookup, DNSRecord
 from app.models.user import User
 from app.schemas.dns import DNSAnalyzeRequest, DNSLookupOut, DNSLookupSummary
-from app.services import dns_service
+from app.services import dns_service, notification_service
 
 router = APIRouter(prefix="/dns", tags=["dns"])
 
@@ -29,6 +29,9 @@ def analyze(data: DNSAnalyzeRequest, db: Session = Depends(get_db),
     db.add(lookup)
     db.commit()
     db.refresh(lookup)
+    notification_service.log_activity(
+        db, current_user, "Análisis DNS", f"Dominio {data.domain.strip().lower()}"
+    )
     return lookup
 
 

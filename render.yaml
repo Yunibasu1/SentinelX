@@ -1,0 +1,18 @@
+# Configuracion para desplegar el backend en Render (plan gratuito)
+# 1. Nuevo > Web Service > conectar el repo SentinelX
+# 2. Root Directory: backend
+# 3. Build Command: pip install -r requirements.txt
+# 4. Start Command: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+# 5. Add "Web Service" env vars (las mismas que en backend/.env)
+# Para SQLite: usar el disco persistente de Render o migrar a Postgres (Neon, gratis).
+services:
+  - type: web
+    name: sentinelx-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./sentinelx.db

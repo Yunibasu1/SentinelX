@@ -4,14 +4,14 @@ Plataforma web para administradores de TI y pequeñas empresas que permite monit
 
 ## ✨ Módulos
 
-| Versión | Estado      | Módulos                                                          |
-| ------- | ----------- | ---------------------------------------------------------------- |
-| v1.0    | En curso ✔ | Login (JWT + refresh), Registro, Dashboard, Docker               |
-| v1.1    | Pendiente  | DNS Lookup, WHOIS, SSL Checker, Historial                        |
-| v1.2    | Pendiente  | Hash, Password, JWT Inspector, File Integrity                    |
-| v1.3    | Pendiente  | IA (Groq / Ollama + LangChain), Chat, Recomendaciones            |
-| v1.4    | Pendiente  | Reportes PDF/Excel/CSV, Gráficos                                 |
-| v2.0    | Pendiente  | Notificaciones, Correos, Comparaciones, CI/CD                    |
+| Versión | Estado       | Módulos                                                          |
+| ------- | ------------ | ---------------------------------------------------------------- |
+| v1.0    | Completado ✔ | Login (JWT + refresh), Registro, Dashboard, Docker               |
+| v1.1    | Completado ✔ | DNS Lookup, WHOIS, SSL Checker, Historial                        |
+| v1.2    | Completado ✔ | Hash, Password, JWT Inspector, File Integrity                    |
+| v1.3    | Completado ✔ | IA (Groq + LangChain), Chat, Recomendaciones                     |
+| v1.4    | Completado ✔ | Reportes PDF/Excel/CSV, Gráficos                                 |
+| v2.0    | En curso ✔   | Notificaciones, Correos, Comparaciones, Logs, CI/CD              |
 
 ## ⚙ Tecnologías
 
@@ -81,10 +81,30 @@ Endpoints principales (prefijo `/api`):
 | POST   | `/auth/refresh`       | Renovar tokens                    | No   |
 | GET    | `/auth/me`            | Datos del usuario actual          | Sí   |
 | GET    | `/dashboard/stats`    | Métricas del dashboard            | Sí   |
+| POST   | `/dns/analyze`        | Análisis DNS de un dominio        | Sí   |
+| POST   | `/ssl/check`          | Comprobar certificado SSL         | Sí   |
+| POST   | `/whois/check`        | Consultar registro WHOIS          | Sí   |
+| POST   | `/hash/upload`        | Calcular hash de un archivo       | Sí   |
+| POST   | `/password/check`     | Analizar fortaleza de contraseña  | Sí   |
+| POST   | `/jwt/inspect`        | Inspeccionar token JWT            | Sí   |
+| POST   | `/ai/chat`            | Asistente IA (Groq)               | Sí   |
+| GET    | `/reports/pdf`        | Informe en PDF                    | Sí   |
+| GET    | `/reports/excel`      | Informe en Excel                  | Sí   |
+| GET    | `/reports/csv`        | Informe en CSV                    | Sí   |
+| GET    | `/notifications`      | Lista de notificaciones           | Sí   |
+| GET    | `/notifications/logs` | Logs de actividad                 | Sí   |
+| GET    | `/compare/dns`        | Comparar análisis DNS             | Sí   |
+| GET    | `/compare/ssl`        | Comparar análisis SSL             | Sí   |
 
 ## 📄 Licencia
 
 MIT — uso libre para fines educativos y personales.
+
+## 🌐 Despliegue
+
+- **Backend** → Render (plan gratuito). Ver `render.yaml`.
+- **Frontend** → Vercel (plan gratuito). Ver `frontend/vercel.json`.
+- Variables de entorno: las mismas de `backend/.env` (SECRET_KEY, GROQ_API_KEY, SMTP_*).
 
 ## 👨‍💻 Autor
 

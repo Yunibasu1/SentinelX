@@ -6,7 +6,7 @@ from app.database.db import get_db
 from app.models.password import PasswordCheck
 from app.models.user import User
 from app.schemas.password import PasswordCheckOut, PasswordCheckRequest
-from app.services import password_service
+from app.services import notification_service, password_service
 
 router = APIRouter(prefix="/password", tags=["password"])
 
@@ -19,6 +19,9 @@ def check(data: PasswordCheckRequest, db: Session = Depends(get_db),
     db.add(record)
     db.commit()
     db.refresh(record)
+    notification_service.log_activity(
+        db, current_user, "Análisis de contraseña", f"Score {record.score}/4"
+    )
     return record
 
 

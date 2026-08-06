@@ -12,6 +12,7 @@ from app.core.security import (
 from app.database.db import get_db
 from app.models.user import User
 from app.schemas.auth import RefreshRequest, Token, UserCreate, UserLogin, UserOut
+from app.services.notification_service import log_activity
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -39,6 +40,7 @@ def login(data: UserLogin, db: Session = Depends(get_db)):
     if user is None or not verify_password(data.password, user.hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciales incorrectas")
 
+    log_activity(db, user, "Inicio de sesión", "Login correcto")
     return Token(
         access_token=create_access_token(str(user.id)),
         refresh_token=create_refresh_token(str(user.id)),

@@ -6,7 +6,7 @@ from app.database.db import get_db
 from app.models.jwt import JwtInspection
 from app.models.user import User
 from app.schemas.jwt import JwtInspectionOut, JwtInspectRequest
-from app.services import jwt_service
+from app.services import jwt_service, notification_service
 
 router = APIRouter(prefix="/jwt", tags=["jwt"])
 
@@ -23,6 +23,7 @@ def inspect(data: JwtInspectRequest, db: Session = Depends(get_db),
     db.add(record)
     db.commit()
     db.refresh(record)
+    notification_service.log_activity(db, current_user, "Inspección JWT", f"Algoritmo {record.algorithm}")
     return record
 
 

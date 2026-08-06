@@ -6,7 +6,7 @@ from app.database.db import get_db
 from app.models.hash import FileHash
 from app.models.user import User
 from app.schemas.hash import FileHashOut
-from app.services import hash_service
+from app.services import hash_service, notification_service
 
 router = APIRouter(prefix="/hash", tags=["hash"])
 
@@ -30,6 +30,9 @@ async def upload(file: UploadFile = File(...), db: Session = Depends(get_db),
     db.add(record)
     db.commit()
     db.refresh(record)
+    notification_service.log_activity(
+        db, current_user, "Hash de archivo", f"Archivo {record.filename}"
+    )
     return record
 
 

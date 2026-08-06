@@ -19,6 +19,11 @@ class Settings(BaseSettings):
 
     GROQ_API_KEY: str = ""
 
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_FROM: str = ""
+    SMTP_PASSWORD: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

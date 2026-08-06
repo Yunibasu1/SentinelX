@@ -6,7 +6,7 @@ from app.database.db import get_db
 from app.models.user import User
 from app.models.whois import WhoisCheck
 from app.schemas.whois import WhoisCheckOut, WhoisCheckRequest
-from app.services import whois_service
+from app.services import notification_service, whois_service
 
 router = APIRouter(prefix="/whois", tags=["whois"])
 
@@ -20,6 +20,9 @@ def check(data: WhoisCheckRequest, db: Session = Depends(get_db),
     db.add(record)
     db.commit()
     db.refresh(record)
+    notification_service.log_activity(
+        db, current_user, "Consulta WHOIS", f"Dominio {data.domain.strip().lower()}"
+    )
     return record
 
 
