@@ -111,3 +111,12 @@ export const jwtService = {
     request<JwtInspection>('/jwt/inspect', { method: 'POST', body: JSON.stringify({ token }) }),
   history: () => request<JwtInspection[]>('/jwt/history'),
 }
+
+export interface AiChatResponse {
+  answer: string
+}
+
+export const aiService = {
+  chat: (message: string) =>
+    request<AiChatResponse>('/ai/chat', { method: 'POST', body: JSON.stringify({ message }) }),
+}

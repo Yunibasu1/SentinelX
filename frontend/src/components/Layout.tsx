@@ -39,6 +39,9 @@ export default function Layout() {
           <Link to="/jwt" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
             JWT Inspector
           </Link>
+          <Link to="/ia" className="block px-2 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/40">
+            Asistente IA
+          </Link>
         </nav>
 
         <div className="border-t border-slate-800 p-4">

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import auth, dashboard, dns, hash_api, jwt, password, ssl, whois
+from app.api import ai, auth, dashboard, dns, hash_api, jwt, password, ssl, whois
 from app.core.config import settings
 from app.database.db import Base, engine
 
@@ -25,6 +25,7 @@ app.include_router(whois.router, prefix=settings.API_V1_PREFIX)
 app.include_router(hash_api.router, prefix=settings.API_V1_PREFIX)
 app.include_router(password.router, prefix=settings.API_V1_PREFIX)
 app.include_router(jwt.router, prefix=settings.API_V1_PREFIX)
+app.include_router(ai.router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")

@@ -17,6 +17,8 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str = "sqlite:///./sentinelx.db"
 
+    GROQ_API_KEY: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

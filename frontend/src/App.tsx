@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import { AuthProvider } from './contexts/AuthContext'
 import Dashboard from './pages/Dashboard'
+import AiAssistant from './pages/AiAssistant'
 import DNSAnalyzer from './pages/DNSAnalyzer'
 import FileHasher from './pages/FileHasher'
 import JwtInspector from './pages/JwtInspector'
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/hash" element={<FileHasher />} />
             <Route path="/password" element={<PasswordChecker />} />
             <Route path="/jwt" element={<JwtInspector />} />
+            <Route path="/ia" element={<AiAssistant />} />
           </Route>
         </Route>
       </Routes>
