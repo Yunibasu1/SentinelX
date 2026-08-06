@@ -11,7 +11,7 @@ Plataforma web para administradores de TI y pequeñas empresas que permite monit
 | v1.2    | Completado ✔ | Hash, Password, JWT Inspector, File Integrity                    |
 | v1.3    | Completado ✔ | IA (Groq + LangChain), Chat, Recomendaciones                     |
 | v1.4    | Completado ✔ | Reportes PDF/Excel/CSV, Gráficos                                 |
-| v2.0    | En curso ✔   | Notificaciones, Correos, Comparaciones, Logs, CI/CD              |
+| v2.0    | Completado ✔ | Notificaciones, Correos, Comparaciones, Logs, CI/CD              |
 
 ## ⚙ Tecnologías
 
