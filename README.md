@@ -10,8 +10,6 @@ Plataforma web para administradores de TI y pequeñas empresas que permite monit
 | 🔧 API (Render)             | https://sentinelx-backend-pksd.onrender.com                            |
 | 📚 Documentación API        | https://sentinelx-backend-pksd.onrender.com/docs                       |
 
-> Cuenta de demostración: `hector@empresa.com` / `Segura123`
->
 > El plan gratis de Render se duerme tras 15 min de inactividad: la primera petición tarda ~30 s.
 
 ## ✨ Módulos
